@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd">
+        
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    	<property name="dataSource" ref="dataSource" />
+    </bean>
+    
+    <bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor"><!-- 配置事务拦截器和事务属性 -->
+    	<property name="transactionManager" ref="transactionManager" />
+    	<property name="transactionAttributes">
+    		<props>
+    			<prop key="get*">PROPAGATION_SUPPORTS</prop>
+    			<prop key="save*">PROPAGATION_REQUIRED</prop>
+    		</props>
+    	</property>
+    </bean>
+    
+    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator"><!-- 按照bean名称创建代理，应用事务拦截器 -->
+    	<property name="beanNames">
+    		<list>
+    			<value>*Service</value>
+    		</list>
+    	</property>
+    	<property name="interceptorNames">
+    		<list>
+    			<value>transactionInterceptor</value>
+    		</list>
+    	</property>
+    </bean>
+</beans>
