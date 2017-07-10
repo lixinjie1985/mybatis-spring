@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd">
+        
+    <!-- 多个sqlSessionFactory，对应多个数据源，实现分库 -->
+    
+    <bean id="sqlSessionFactory0" class="org.mybatis.spring.SqlSessionFactoryBean">
+    	<property name="dataSource" ref="dataSource0" />
+    	<property name="configLocation" value="mybatis/mybatis-config.xml" /><!-- mybatis的配置文件 -->
+    	<property name="mapperLocations" value="classpath:mybatis/mapper/**/*.xml" /><!-- 自动扫描mapper的xml文件 -->
+    </bean>
+    
+    <bean id="sqlSessionFactory1" class="org.mybatis.spring.SqlSessionFactoryBean">
+    	<property name="dataSource" ref="dataSource1" />
+    	<property name="configLocation" value="mybatis/mybatis-config.xml" /><!-- mybatis的配置文件 -->
+    	<property name="mapperLocations" value="classpath:mybatis/mapper/**/*.xml" /><!-- 自动扫描mapper的xml文件 -->
+    </bean>
+    
+    <bean id="sqlSessionFactory2" class="org.mybatis.spring.SqlSessionFactoryBean">
+    	<property name="dataSource" ref="dataSource2" />
+    	<property name="configLocation" value="mybatis/mybatis-config.xml" /><!-- mybatis的配置文件 -->
+    	<property name="mapperLocations" value="classpath:mybatis/mapper/**/*.xml" /><!-- 自动扫描mapper的xml文件 -->
+    </bean>
+    
+    <bean id="sqlSessionFactory3" class="org.mybatis.spring.SqlSessionFactoryBean">
+    	<property name="dataSource" ref="dataSource3" />
+    	<property name="configLocation" value="mybatis/mybatis-config.xml" /><!-- mybatis的配置文件 -->
+    	<property name="mapperLocations" value="classpath:mybatis/mapper/**/*.xml" /><!-- 自动扫描mapper的xml文件 -->
+    </bean>
+    
+    <!-- 同一个Mapper产生多个实例，每个实例对应一个数据库，这样同一个Mapper接口的不同实例将数据插入到不同数据库，只要根据即将入库的数据选择Mapper实例就可以了 -->
+    <!-- 可以该Mapper的所有实例注入到同一个service类中，其实就是对应多个成员变量，根据即将入库的数据选择某个成员变量就可以了 -->
+    <!-- 可以实现高并发下日志按省份入不同库 -->
+    
+    <bean id="authorMapper0" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="org.eop.mybatis.spring.mapper.AuthorMapper" /><!-- 单独为每个接口生产MapperFactoryBean -->
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory0" />
+    </bean>
+    
+    <bean id="authorMapper1" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="org.eop.mybatis.spring.mapper.AuthorMapper" /><!-- 单独为每个接口生产MapperFactoryBean -->
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory1" />
+    </bean>
+    
+    <bean id="authorMapper2" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="org.eop.mybatis.spring.mapper.AuthorMapper" /><!-- 单独为每个接口生产MapperFactoryBean -->
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory2" />
+    </bean>
+    
+    <bean id="authorMapper3" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="org.eop.mybatis.spring.mapper.AuthorMapper" /><!-- 单独为每个接口生产MapperFactoryBean -->
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory3" />
+    </bean>
+    
+    
+    
+    <bean id="blogMapper0" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="org.eop.mybatis.spring.mapper.BlogMapper" /><!-- 单独为每个接口生产MapperFactoryBean -->
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory0" />
+    </bean>
+    
+    <bean id="blogMapper1" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="org.eop.mybatis.spring.mapper.BlogMapper" /><!-- 单独为每个接口生产MapperFactoryBean -->
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory1" />
+    </bean>
+    
+    <bean id="blogMapper2" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="org.eop.mybatis.spring.mapper.BlogMapper" /><!-- 单独为每个接口生产MapperFactoryBean -->
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory2" />
+    </bean>
+    
+    <bean id="blogMapper3" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="org.eop.mybatis.spring.mapper.BlogMapper" /><!-- 单独为每个接口生产MapperFactoryBean -->
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory3" />
+    </bean>
+</beans>
